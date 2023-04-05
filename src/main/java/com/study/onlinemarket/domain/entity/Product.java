@@ -1,36 +1,44 @@
 package com.study.onlinemarket.domain.entity;
 
-import com.study.onlinemarket.adapter.repository.base.BaseDomainEntity;
 import com.study.onlinemarket.domain.entity.context.ProductContext;
-import lombok.NonNull;
-import lombok.Value;
+import lombok.*;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Value
-public class Product extends BaseDomainEntity<Long> {
-    @NonNull
+@Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "product")
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hibernate_sequence")
+    @SequenceGenerator(name = "hibernate_sequence", sequenceName = "hibernate_sequence", allocationSize = 10)
+    Long id;
+
     BigDecimal price;
 
-    @NonNull
     Long count;
 
-    @NonNull
     String name;
 
-    @NonNull
     String description;
 
-    @NonNull
+    @ManyToOne()
+    @JoinColumn(name = "manufacturer_id")
     Manufacturer manufacturer;
 
     public static Product createProductFrom(ProductContext context) {
-        return new Product(
-                context.getPrice(),
-                context.getCount(),
-                context.getName(),
-                context.getDescription(),
-                context.getManufacturer()
-        );
+        return Product.builder()
+                .count(context.getCount())
+                .price(context.getPrice())
+                .name(context.getName())
+                .description(context.getDescription())
+                .manufacturer(context.getManufacturer())
+                .build();
     }
 }

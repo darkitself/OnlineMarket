@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="2023-04-05-18-41" author="KaluginEA" context="prod">
+
+        <createSequence sequenceName="hibernate_sequence" startValue="1" incrementBy="10"/>
+
+        <createTable tableName="manufacturer">
+
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+
+        <createTable tableName="product">
+
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="varchar">
+
+            </column>
+
+            <column name="price" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="count" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="manufacturer_id" type="bigint">
+                <constraints foreignKeyName="product_manufacturer_fk"
+                             referencedTableName="manufacturer"
+                             referencedColumnNames="id"/>
+            </column>
+
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
