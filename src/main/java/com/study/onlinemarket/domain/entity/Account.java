@@ -2,23 +2,20 @@ package com.study.onlinemarket.domain.entity;
 
 
 import com.study.onlinemarket.domain.entity.context.AccountContext;
-import lombok.*;
+import com.study.onlinemarket.domain.event.NewAccountCreated;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Getter
-@Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "account")
-public class Account {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hibernate_sequence")
-    @SequenceGenerator(name = "hibernate_sequence", sequenceName = "hibernate_sequence", allocationSize = 10)
-    Long id;
+public class Account extends BaseDomainEntity {
 
     String username;
 
@@ -28,13 +25,12 @@ public class Account {
 
     Boolean ban;
 
-    public static Account createAccountFrom(AccountContext context) {
-        return Account.builder()
-                .username(context.getUsername())
-                .password(context.getPassword())
-                .role(context.getRole())
-                //TODO: change column name to enabled
-                .ban(true)
-                .build();
+    public Account(AccountContext accountContext) {
+        Long a = 2L;
+        username = accountContext.getUsername();
+        password = accountContext.getPassword();
+        role = accountContext.getRole();
+        ban = true;
+        registerEvent(() -> NewAccountCreated.from(this));
     }
 }

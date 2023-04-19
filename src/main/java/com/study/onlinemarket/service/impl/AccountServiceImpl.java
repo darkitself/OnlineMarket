@@ -5,11 +5,13 @@ import com.study.onlinemarket.domain.dto.request.CreateAccountRequest;
 import com.study.onlinemarket.domain.dto.response.AccountResponse;
 import com.study.onlinemarket.domain.entity.Account;
 import com.study.onlinemarket.domain.entity.context.AccountContext;
+import com.study.onlinemarket.domain.event.NewAccountCreated;
 import com.study.onlinemarket.service.AccountService;
 import com.study.onlinemarket.service.factory.AccountFactory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,14 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class AccountServiceImpl implements AccountService {
-
     AccountFactory accountFactory;
     AccountRepository accountRepository;
 
     @Override
     public AccountResponse createNewAccount(CreateAccountRequest accountRequest) {
         AccountContext context = accountFactory.createContextFrom(accountRequest);
-        Account account = Account.createAccountFrom(context);
+        Account account = new Account(context);
         account = accountRepository.save(account);
         return accountFactory.createResponse(account);
     }
