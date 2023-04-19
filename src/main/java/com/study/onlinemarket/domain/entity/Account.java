@@ -26,7 +26,6 @@ public class Account extends BaseDomainEntity {
     Boolean ban;
 
     public Account(AccountContext accountContext) {
-        Long a = 2L;
         username = accountContext.getUsername();
         password = accountContext.getPassword();
         role = accountContext.getRole();
