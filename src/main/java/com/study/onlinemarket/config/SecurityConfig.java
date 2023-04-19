@@ -41,11 +41,12 @@ public class SecurityConfig {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth,
+                                DataSource dataSource) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .authoritiesByUsernameQuery("select USERNAME, ROLE from account where USERNAME=?")
-                .usersByUsernameQuery("select USERNAME, PASSWORD, BAN as enabled from account where USERNAME=?");
+                .usersByUsernameQuery("select USERNAME, PAВSSWORD, BAN as enabled from account where USERNAME=?");
     }
 }
 
