@@ -2,6 +2,7 @@ package com.study.onlinemarket.adapter.web.controller;
 
 
 import com.study.onlinemarket.adapter.web.annotation.ApiV1;
+import com.study.onlinemarket.common.annotation.LogExecutionTime;
 import com.study.onlinemarket.domain.dto.request.CreateAccountRequest;
 import com.study.onlinemarket.domain.dto.response.AccountResponse;
 import com.study.onlinemarket.service.AccountService;
@@ -22,6 +23,7 @@ public class AccountController {
     AccountService accountService;
 
     @PostMapping("/register")
+    @LogExecutionTime
     public ResponseEntity<AccountResponse> createProduct(@RequestBody CreateAccountRequest accountRequest) {
         return new ResponseEntity<>(accountService.createNewAccount(accountRequest), HttpStatus.OK);
     }
