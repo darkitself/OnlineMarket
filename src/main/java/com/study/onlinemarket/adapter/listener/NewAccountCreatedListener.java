@@ -1,6 +1,7 @@
 package com.study.onlinemarket.adapter.listener;
 
 import com.study.onlinemarket.domain.event.NewAccountCreated;
+import com.study.onlinemarket.service.RabbitService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,10 +16,12 @@ import java.time.Instant;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class NewAccountCreatedListener {
 
+    RabbitService rabbitService;
+
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleNewAccountCreatedEvent(NewAccountCreated event) {
         System.out.println(Instant.now().toString() + " TransactionalEventListener handler start");
-        System.out.printf("New user with username '%s' registered!\n", event.getUsername());
+        rabbitService.send(event);
         System.out.println(Instant.now().toString() + " TransactionalEventListener handler end");
     }
 }

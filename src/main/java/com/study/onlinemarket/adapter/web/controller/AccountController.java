@@ -6,6 +6,7 @@ import com.study.onlinemarket.common.annotation.LogExecutionTime;
 import com.study.onlinemarket.domain.dto.request.CreateAccountRequest;
 import com.study.onlinemarket.domain.dto.response.AccountResponse;
 import com.study.onlinemarket.service.AccountService;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,9 @@ public class AccountController {
     AccountService accountService;
 
     @PostMapping("/register")
+    @Timed(value = "register_time")
     @LogExecutionTime
-    public ResponseEntity<AccountResponse> createProduct(@RequestBody CreateAccountRequest accountRequest) {
+    public ResponseEntity<AccountResponse> register(@RequestBody CreateAccountRequest accountRequest) {
         return new ResponseEntity<>(accountService.createNewAccount(accountRequest), HttpStatus.OK);
     }
 }
